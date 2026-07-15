@@ -3,6 +3,7 @@
   "type": "module",
   "version": "4.1.4",
   "scripts": {
+    "test": "bun test",
     "dev": "astro dev",
     "dev:check": "astro check --watch & astro dev",
     "build": "astro-pure check && astro check && astro build",

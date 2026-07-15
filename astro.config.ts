@@ -22,12 +22,13 @@ import {
 } from './src/plugins/shiki-official/transformers.ts'
 import config from './src/site.config.ts'
 
+const site = process.env.SITE_URL ?? 'http://localhost:4321'
+
 // https://astro.build/config
 export default defineConfig({
   // [Basic]
-  site: 'https://astro-pure.js.org',
+  site,
   // Deploy to a sub path
-  // https://astro-pure.js.org/docs/setup/deployment#platform-with-base-path
   // base: '/astro-pure/',
   trailingSlash: 'never',
   // root: './my-project-directory',
