@@ -66,16 +66,17 @@ git -C .superpowers/astro-theme-pure-reference rev-parse HEAD
 
 Expected: Node 输出 `v24.16.0`；仓库无未提交变更；最后一行是 `0047f6d4278d4c3e823dca608022cd6ebe7b5c96`。
 
-- [ ] **Step 2: 将本地生产分支改名为 `main`**
+- [ ] **Step 2: 验证生产分支与隔离功能分支**
 
 Run:
 
 ```powershell
-git branch -m master main
+git show-ref --verify refs/heads/main
+git branch --show-current
 git status --short --branch
 ```
 
-Expected: 第一行以 `## main` 开头，设计规格和实施计划仍然存在。
+Expected: `main` 分支存在；当前分支是 `feature/cc-personal-site`；设计规格和实施计划仍然存在。
 
 - [ ] **Step 3: 导入固定版本的上游文件**
 
@@ -1183,10 +1184,10 @@ Run:
 ```powershell
 if (Test-Path '.vercel/output/static/docs') { throw 'Unexpected /docs output' }
 if (Test-Path 'dist/docs') { throw 'Unexpected /docs output' }
-rg -n --hidden -g '!node_modules/**' -g '!.git/**' -g '!.superpowers/**' -g '!.codegraph/**' "cworld1|cworld0|astro-pure\.js\.org|dummyjson\.com|Lorem ipsum|Get Template|Certifications"
+rg -n "cworld1|cworld0|astro-pure\.js\.org|dummyjson\.com|Lorem ipsum|Get Template|Certifications" src public
 ```
 
-Expected: Docs 检查不抛错；`rg` 无匹配并以 1 表示“未找到”。
+Expected: Docs 检查不抛错；公开源码和静态资源中 `rg` 无匹配并以 1 表示“未找到”。README 的上游来源记录与主题的必要署名不属于作者个人资料。
 
 - [ ] **Step 3: 启动生产预览并做 HTTP 冒烟测试**
 
