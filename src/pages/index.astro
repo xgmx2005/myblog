@@ -1,197 +1,81 @@
 ---
 import { Image } from 'astro:assets'
 
-import { Quote } from 'astro-pure/advanced'
 import { PostPreview } from 'astro-pure/components/pages'
 import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
 import { Button, Card, Icon, Label } from 'astro-pure/user'
-import PageLayout from '@/layouts/BaseLayout.astro'
-import ProjectCard from '@/components/home/ProjectCard.astro'
+import ContactLinks from '@/components/contact/ContactLinks.astro'
 import Section from '@/components/home/Section.astro'
 import SkillLayout from '@/components/home/SkillLayout.astro'
-import config from '@/site-config'
+import avatar from '@/assets/avatar.jpg'
+import PageLayout from '@/layouts/BaseLayout.astro'
+import { profile, skills } from '@/data/profile'
 
-const languages = ['Html', 'JavaScript', 'CSS', 'Shell']
-const frontend = ['TypeScript', 'Vite', 'Webpack', 'Astro']
-const backend = ['Vercel', 'Waline']
-
-const MAX_POSTS = 10
-const allPosts = await getBlogCollection()
-const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
-
-const imagePath = config.logo.src
-const images = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/*.{jpeg,jpg,png,gif,avif,webp}'
-)
-if (!images[imagePath])
-  throw new Error(
-    `"${imagePath}" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif,avif,webp}"`
-  )
+const recentPosts = sortMDByDate(await getBlogCollection()).slice(0, 6)
 ---
 
-<PageLayout meta={{ title: 'Home' }} highlightColor='#659EB9'>
+<PageLayout meta={{ title: '首页' }} highlightColor='#7ba58f'>
   <main class='flex w-full flex-col items-center'>
-    <section class='animate mb-10 flex flex-col items-center gap-y-7' id='content-header'>
+    <section class='animate mb-10 flex flex-col items-center gap-y-6' id='content-header'>
       <Image
-        src={images[imagePath]()}
-        alt={config.logo.alt || 'Profile'}
-        class='h-28 w-auto rounded-full border p-1'
+        src={avatar}
+        alt='CC avatar'
+        class='size-28 rounded-full border object-cover p-1'
         loading='eager'
         fetchpriority='high'
       />
-
-      <div class='flex flex-col items-center gap-y-4'>
-        <h1 class='text-3xl font-medium'>{config.author}</h1>
-        <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-          <Label title='Somewhere'>
-            <Icon name='location' class='size-5' slot='icon' />
-          </Label>
-          <Label
-            title='Source code'
-            as='a'
-            href='https://github.com/cworld1/astro-theme-pure'
-            target='_blank'
-          >
-            <Icon name='github' class='size-5' slot='icon' />
-          </Label>
-        </div>
+      <div class='flex flex-col items-center gap-y-3'>
+        <h1 class='text-3xl font-medium'>{profile.id}</h1>
+        <Label title={profile.location}>
+          <Icon name='location' class='size-5' slot='icon' />
+        </Label>
+        <p class='max-w-2xl text-center text-muted-foreground'>{profile.quote}</p>
       </div>
-
-      {/* Get template */}
-      <a
-        href='https://github.com/cworld1/astro-theme-pure'
-        target='_blank'
-        class='flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
-      >
-        <span class='relative flex items-center justify-center'>
-          <span
-            class='absolute size-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
-          ></span>
-          <span class='size-2 rounded-full bg-green-400'></span>
-        </span>
-        <p class='font-medium text-muted-foreground'>Get Template</p>
-      </a>
     </section>
 
     <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
       <Section title='About'>
-        <p class='text-muted-foreground'>Developer / Designer</p>
-        <p class='text-muted-foreground'>
-          Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione
-          indoctum dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel,
-          at eum oratio possit voluptatum.
-        </p>
-        <Button title='More about me' class='w-fit self-end' href='/about' variant='ahead' />
+        <p class='text-muted-foreground'>{profile.summary}</p>
+        <Button title='更多关于我' class='w-fit self-end' href='/about' variant='ahead' />
       </Section>
-      {
-        allPostsByDate.length > 0 && (
-          <Section title='Posts'>
-            <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
-              {allPostsByDate.map((p) => (
-                <li class='flex flex-col gap-x-2 sm:flex-row'>
-                  <PostPreview post={p} />
-                </li>
+
+      <Section title='最近文章'>
+        {
+          recentPosts.length > 0 ? (
+            <ul class='flex flex-col gap-y-2'>
+              {recentPosts.map((post) => (
+                <li><PostPreview {post} /></li>
               ))}
             </ul>
-            <Button title='More posts' class='w-fit self-end' href='/blog' variant='ahead' />
-          </Section>
-        )
-      }
+          ) : (
+            <p class='text-muted-foreground'>还没有文章，第一篇正在路上。</p>
+          )
+        }
+        <Button title='查看全部文章' class='w-fit self-end' href='/blog' variant='ahead' />
+      </Section>
 
-      {
-        /* <Section title='Experience'>
-      <Card
-        heading='Lorem Ipsum'
-        subheading='Sit amet consectetur'
-        date='Dec 2022 - Nov 2023'
-        imagePath='/src/assets/about-astro.png'
-        altText='Lorem, ipsum dolor sit'
-        imageClass='h-12 w-auto md:-start-16'
-      >
-        <ul class='ms-4 list-disc text-muted-foreground'>
-          <li>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
-            molestiae laboriosam pariatur!
-
-            <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
-          </li>
-        </ul>
-      </Card>
-      <Card
-        heading='Lorem Ipsum'
-        subheading='Sit amet consectetur'
-        date='Dec 2022 - Nov 2023'
-        imagePath='/src/assets/about-astro.png'
-        altText='Lorem, ipsum dolor sit'
-        imageClass='h-12 w-auto md:-start-16'
-      />
-    </Section> */
-      }
       <Section title='Education'>
         <Card
-          as='a'
-          heading='Lorem ipsum'
-          subheading='Lorem ipsum dolor sit amet, vidit suscipit at mei.'
-          date='August 2021 - July 2025'
-          href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-        >
-          {
-            /* <ul class='ms-4 list-disc text-muted-foreground'>
-          <li>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
-            molestiae laboriosam pariatur!
-          </li>
-          <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
-        </ul> */
-          }
-        </Card>
-      </Section>
-
-      <Section title='Website List'>
-        <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
-          <ProjectCard
-            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-            heading='Lorem ipsum'
-            subheading='Do not go gentle into that good night'
-            imagePath='/src/assets/projects/1.avif'
-          />
-          <ProjectCard
-            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-            heading='Lorem ipsum'
-            subheading='Old age burn and rave at close of day'
-            imagePath='/src/assets/projects/2.avif'
-          />
-          <ProjectCard
-            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-            heading='Lorem ipsum'
-            subheading='Rage, rage against the dying of the light'
-            imagePath='/src/assets/projects/3.avif'
-          />
-          <ProjectCard
-            href='/projects'
-            heading='More projects'
-            subheading='Check out more projects'
-            imagePath='/src/assets/projects/4.avif'
-          />
-        </div>
-      </Section>
-
-      <Section title='Certifications'>
-        <Card
-          as='a'
-          heading='Lorem ipsum'
-          subheading='Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione indoctum dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel, at eum oratio possit voluptatum. Dicat ceteros cu vim. Impetus fuisset ullamcorper pri cu, his posse iisque ad, aliquam honestatis usu id.'
-          date='July 2024'
-          href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+          heading={profile.education.school}
+          subheading={profile.education.major}
+          date={profile.education.period}
         />
       </Section>
 
+      <Section title='Projects'>
+        <p class='text-muted-foreground'>持续更新中，先保留一个以后认真填满的入口。</p>
+        <Button title='查看项目页' class='w-fit self-end' href='/projects' variant='ahead' />
+      </Section>
+
       <Section title='Skills'>
-        <SkillLayout title='Languages' skills={languages} />
-        <SkillLayout title='Frontend' skills={frontend} />
-        <SkillLayout title='Backend' skills={backend} />
+        {Object.entries(skills).map(([title, values]) => (
+          <SkillLayout title={title} skills={[...values]} />
+        ))}
+      </Section>
+
+      <Section title='Contact'>
+        <ContactLinks />
       </Section>
     </div>
-    <Quote class='mt-12' />
   </main>
 </PageLayout>

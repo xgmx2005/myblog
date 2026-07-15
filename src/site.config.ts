@@ -1,4 +1,4 @@
-import type { CardListData, Config, IntegrationUserConfig, ThemeUserConfig } from 'astro-pure/types'
+import type { Config, IntegrationUserConfig, ThemeUserConfig } from 'astro-pure/types'
 
 export const theme: ThemeUserConfig = {
   title: 'CC',
@@ -66,8 +66,6 @@ export const integ: IntegrationUserConfig = {
     additionalConfigs: {}
   }
 }
-
-export const terms: CardListData = { title: 'Site policy', list: [] }
 
 const config = { ...theme, integ } as Config
 export default config

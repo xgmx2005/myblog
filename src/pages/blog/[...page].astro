@@ -30,7 +30,7 @@ const { page, uniqueTags, collectionsCount } = Astro.props
 
 const meta = {
   description: 'Some posts or archives of my blog',
-  title: 'Blog'
+  title: '文章'
 }
 
 const paginationProps = {
@@ -53,11 +53,11 @@ const paginationProps = {
   <Button title='Back' href='/' variant='back' />
   <main class='mt-6 lg:mt-10'>
     <div id='content-header' class='animate'>
-      <h1 class='mb-6 mt-6 text-3xl font-medium sm:mt-10'>Blog</h1>
+      <h1 class='mb-6 mt-6 text-3xl font-medium sm:mt-10'>文章</h1>
     </div>
     {
       page.data.length === 0 ? (
-        <p>No posts yet.</p>
+        <p>还没有文章，第一篇正在路上。</p>
       ) : (
         <div class='grid gap-y-16 sm:grid-cols-[3fr_1fr] sm:gap-x-8'>
           <section aria-label='Blog posts list' class='animate' id='content'>
@@ -67,7 +67,7 @@ const paginationProps = {
                 Page {page.currentPage} - Showing {page.data.length} of {collectionsCount} posts
               </span>
               <a aria-label='View all blog by years' href='/archives' data-astro-prefetch>
-                View all posts by years →
+                按年份查看归档 →
               </a>
             </div>
             {/* posts */}
@@ -84,7 +84,7 @@ const paginationProps = {
             <aside class='animate' id='sidebar'>
               <h2 class='mb-4 flex items-center text-lg font-medium'>
                 <Icon name='tag-2' class='me-2' />
-                Tags
+                标签
               </h2>
               <ul class='text-bgColor flex flex-wrap gap-2'>
                 {
@@ -98,7 +98,7 @@ const paginationProps = {
               </ul>
               <span class='mt-4 block sm:text-end'>
                 <a aria-label='View all blog categories' href='/tags' data-astro-prefetch>
-                  View all →
+                  查看全部 →
                 </a>
               </span>
             </aside>

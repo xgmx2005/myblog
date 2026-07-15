@@ -1,0 +1,27 @@
+---
+import { Icon } from 'astro-pure/user'
+import { profile } from '@/data/profile'
+---
+
+<nav aria-label='联系方式' class='flex flex-wrap gap-x-5 gap-y-3'>
+  <a href={profile.github} target='_blank' rel='me noopener'>
+    <Icon name='github' class='me-1 inline size-5' />GitHub
+  </a>
+  <a href='#contact-email' data-email-link data-email={profile.email.encoded}>
+    <Icon name='email' class='me-1 inline size-5' />
+    <span>{profile.email.masked}</span>
+  </a>
+  <a href='/rss.xml'>
+    <Icon name='rss' class='me-1 inline size-5' />RSS
+  </a>
+</nav>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-email-link]').forEach((link) => {
+    const address = atob(link.dataset.email ?? '')
+    if (!address) return
+    link.href = `mailto:${address}`
+    const label = link.querySelector('span')
+    if (label) label.textContent = address
+  })
+</script>
