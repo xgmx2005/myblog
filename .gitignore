@@ -42,6 +42,7 @@ bunfig.toml
 
 # Local agent reference material
 .superpowers/
+.worktrees/
 
 # Test output
 test-results/
