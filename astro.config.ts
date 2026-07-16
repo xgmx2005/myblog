@@ -28,6 +28,7 @@ const site = process.env.SITE_URL ?? 'http://localhost:4321'
 export default defineConfig({
   // [Basic]
   site,
+  vite: { envPrefix: ['PUBLIC_', 'NEXT_PUBLIC_'] },
   // Deploy to a sub path
   // base: '/astro-pure/',
   trailingSlash: 'never',
