@@ -23,7 +23,6 @@
     "@astrojs/compiler-rs": "^0.1.10",
     "@astrojs/rss": "4.0.18",
     "@astrojs/vercel": "10.0.6",
-    "@supabase/supabase-js": "2.110.1",
     "astro": "6.2.1",
     "astro-pure": "1.4.6",
     "katex": "^0.16.45",
