@@ -11,7 +11,6 @@ describe('public pages', () => {
     for (const value of ['profile.id', 'profile.location', 'profile.quote', '最近文章', 'Education', 'Projects', 'Skills']) {
       expect(home).toContain(value)
     }
-    expect(home).toContain('还没有文章，第一篇正在路上。')
     expect(home).not.toContain('Get Template')
     expect(home).not.toContain('Certifications')
   })

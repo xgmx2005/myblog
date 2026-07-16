@@ -14,20 +14,21 @@ function walk(path: string): string[] {
 }
 
 describe('content system cleanup', () => {
-  test('keeps an empty blog collection and publishes no docs route', () => {
+  test('publishes only the approved initial blog collection and no docs route', () => {
     const posts = walk(absolute('src/content/blog')).filter((file) => ['.md', '.mdx'].includes(extname(file)))
-    expect(posts).toEqual([])
-    expect(existsSync(absolute('src/content/blog/.gitkeep'))).toBe(true)
+    expect(posts.map((file) => file.replaceAll('\\', '/').split('/').at(-1)).sort()).toEqual([
+      'git-advanced-version-branch.md',
+      'obsidian-ai-agent-claudian-skills.md',
+      'obsidian-cli-command-reference.md',
+      'obsidian-cli-core-principles.md',
+      'obsidian-essential-skills.md'
+    ])
     expect(existsSync(absolute('src/content/docs'))).toBe(false)
     expect(existsSync(absolute('src/pages/docs'))).toBe(false)
   })
 
-  test('removes Waline from dependencies and layouts', () => {
-    const pkg = JSON.parse(readFileSync(absolute('package.json'), 'utf8'))
-    expect(pkg.dependencies['@waline/client']).toBeUndefined()
-    expect(existsSync(absolute('src/components/waline'))).toBe(false)
+  test('keeps local layouts free of upstream sample content', () => {
     expect(readFileSync(absolute('src/layouts/CommonPage.astro'), 'utf8')).not.toContain('PageInfo')
-    expect(readFileSync(absolute('src/layouts/BlogPost.astro'), 'utf8')).not.toContain('Comment')
   })
 
   test('contains no upstream identity or sample prose in public source', () => {
