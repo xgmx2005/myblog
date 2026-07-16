@@ -37,6 +37,26 @@ draft: false
 
 Recommended tags are `AI 探索`, `搭建记录`, `工具资源`, and `生活随笔`. Multiple tags are allowed.
 
+The approved Obsidian notes can be imported deterministically with:
+
+```bash
+bun scripts/import-obsidian-posts.ts
+```
+
+Run the importer twice before committing; the second run should produce no diff.
+
+## Public configuration
+
+The Astro website accepts one optional interaction variable:
+
+```text
+PUBLIC_WALINE_SERVER_URL=https://your-waline-service.example
+```
+
+Without it, article content and the guestbook still render with a clear disabled state. Database credentials and QQ SMTP authorization codes belong only to the separate `cc-waline` Vercel project; they must never be added to this repository or to `PUBLIC_` variables.
+
+Pagefind is built into every production deployment and remains the active search provider until Algolia DocSearch is approved.
+
 ## Verification
 
 ```bash
