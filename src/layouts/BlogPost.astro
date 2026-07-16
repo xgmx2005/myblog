@@ -8,6 +8,7 @@ import 'katex/dist/katex.min.css'
 import { MediumZoom } from 'astro-pure/advanced'
 import { ArticleBottom, Copyright, Hero, TOC } from 'astro-pure/components/pages'
 import config from 'virtual:config'
+import WalineThread from '@/components/waline/WalineThread.astro'
 import PageLayout from '@/layouts/ContentLayout.astro'
 
 interface Props {
@@ -57,6 +58,7 @@ const primaryColor = data.heroImage?.color ?? 'hsl(var(--primary) / var(--un-tex
     <Copyright {data} />
     {/* Article recommend */}
     <ArticleBottom collections={posts} {id} class='mt-3 sm:mt-6' />
+    <WalineThread path={`/blog/${id}`} reaction={true} title='评论与回应' />
   </Fragment>
 
   <slot name='bottom-sidebar' slot='bottom-sidebar' />

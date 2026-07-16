@@ -1,0 +1,91 @@
+---
+import '@waline/client/waline.css'
+
+import { normalizeWalinePath, walineConfig } from '@/lib/waline/config'
+
+interface Props {
+  path: string
+  reaction?: boolean
+  title?: string
+}
+
+const {
+  path,
+  reaction = false,
+  title = '评论'
+} = Astro.props
+const normalizedPath = normalizeWalinePath(path)
+---
+
+<section
+  aria-label={title}
+  class='waline-thread mt-10'
+  data-waline-thread
+  data-server-url={walineConfig.serverURL}
+  data-path={normalizedPath}
+  data-reaction={String(reaction)}
+>
+  <h2 class='mb-4 text-xl font-medium'>{title}</h2>
+  {
+    walineConfig.enabled ? (
+      <>
+        <p class='text-sm text-muted-foreground' data-waline-status aria-live='polite'>
+          评论正在加载……
+        </p>
+        <div data-waline-root />
+      </>
+    ) : (
+      <p class='text-sm text-muted-foreground'>评论服务尚未启用。</p>
+    )
+  }
+</section>
+
+<script>
+  import { init } from '@waline/client'
+
+  const unavailableMessage = '评论服务暂时不可用，请稍后重试。'
+
+  function initializeWalineThreads() {
+    for (const shell of document.querySelectorAll<HTMLElement>('[data-waline-thread]')) {
+      if (shell.dataset.initialized === 'true') continue
+
+      const root = shell.querySelector<HTMLElement>('[data-waline-root]')
+      const status = shell.querySelector<HTMLElement>('[data-waline-status]')
+      const serverURL = shell.dataset.serverUrl
+      const path = shell.dataset.path
+
+      if (!root || !status || !serverURL || !path) continue
+
+      try {
+        init({
+          el: root,
+          serverURL,
+          path,
+          lang: 'zh-CN',
+          login: 'force',
+          reaction: shell.dataset.reaction === 'true',
+          dark: 'html.dark',
+          wordLimit: [1, 1000],
+          imageUploader: false
+        })
+        shell.setAttribute('data-initialized', 'true')
+
+        const startedAt = Date.now()
+        const timer = window.setInterval(() => {
+          if (root.querySelector('.wl-panel')) {
+            status.hidden = true
+            window.clearInterval(timer)
+          } else if (Date.now() - startedAt >= 8_000) {
+            status.textContent = unavailableMessage
+            window.clearInterval(timer)
+          }
+        }, 200)
+      } catch {
+        status.textContent = unavailableMessage
+      }
+    }
+  }
+
+  initializeWalineThreads()
+  document.addEventListener('astro:page-load', initializeWalineThreads)
+</script>

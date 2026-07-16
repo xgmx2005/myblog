@@ -1,0 +1,9 @@
+---
+import WalineThread from '@/components/waline/WalineThread.astro'
+import PageLayout from '@/layouts/CommonPage.astro'
+---
+
+<PageLayout title='留言板'>
+  <p>欢迎来这里打个招呼。留言公开可见，登录后可以发布。</p>
+  <WalineThread path='/guestbook' reaction={false} title='伙伴留言' />
+</PageLayout>

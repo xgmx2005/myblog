@@ -24,6 +24,7 @@ export const theme: ThemeUserConfig = {
       { title: '文章', link: '/blog' },
       { title: '项目', link: '/projects' },
       { title: '友链', link: '/links' },
+      { title: '留言板', link: '/guestbook' },
       { title: '关于', link: '/about' }
     ]
   },
@@ -60,6 +61,7 @@ export const integ: IntegrationUserConfig = {
     selector: '.prose .zoomable',
     options: { className: 'zoomable' }
   },
+  // Required by astro-pure's schema; the local WalineThread wrapper is authoritative.
   waline: {
     enable: false,
     showMeta: false,

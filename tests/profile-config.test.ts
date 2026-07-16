@@ -54,11 +54,12 @@ describe('site configuration', () => {
       { title: '文章', link: '/blog' },
       { title: '项目', link: '/projects' },
       { title: '友链', link: '/links' },
+      { title: '留言板', link: '/guestbook' },
       { title: '关于', link: '/about' }
     ])
   })
 
-  test('disables external quote and Waline services', () => {
+  test('keeps the local quote source and no upstream service identity', () => {
     expect(integ.quote.server).toBe('/quote.json')
     expect(integ.waline.enable).toBe(false)
     const configSource = readFileSync(resolve(root, 'src/site.config.ts'), 'utf8')
