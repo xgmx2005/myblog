@@ -2,6 +2,8 @@ import { existsSync, readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { describe, expect, test } from 'bun:test'
 
+import { DOT_GRID_COLORS } from '../src/components/guestbook/dot-grid-config'
+
 const root = resolve(import.meta.dir, '..')
 const read = (path: string) => readFileSync(resolve(root, path), 'utf8')
 const readOptional = (path: string) => {
@@ -24,13 +26,32 @@ describe('DotGrid integration', () => {
     expect(config).toContain('react(),')
   })
 
-  test('ships the approved fresh light and deep violet dark palettes', () => {
-    const config = readOptional('src/components/guestbook/dot-grid-config.ts')
+  test('ships a high-contrast fresh light palette and the official violet dark palette', () => {
+    expect(DOT_GRID_COLORS.light).toEqual({
+      base: '#6aa6b5',
+      active: '#00b8d4',
+      glow: '#70e2e8',
+      glowOpacity: 0.18
+    })
+    expect(DOT_GRID_COLORS.dark).toEqual({
+      base: '#2f293a',
+      active: '#5227ff',
+      glow: '#5227ff',
+      glowOpacity: 0.1
+    })
+  })
 
-    expect(config).toContain("base: '#4f9db1'")
-    expect(config).toContain("active: '#16b8c4'")
-    expect(config).toContain("base: '#30283f'")
-    expect(config).toContain("active: '#6947ff'")
+  test('uses the official React Bits demo density and motion parameters', () => {
+    const wrapper = readOptional('src/components/guestbook/GuestbookDotGrid.jsx')
+
+    expect(wrapper).toContain('dotSize={5}')
+    expect(wrapper).toContain('gap={15}')
+    expect(wrapper).toContain('proximity={120}')
+    expect(wrapper).toContain('speedTrigger={100}')
+    expect(wrapper).toContain('shockRadius={250}')
+    expect(wrapper).toContain('shockStrength={5}')
+    expect(wrapper).toContain('resistance={750}')
+    expect(wrapper).toContain('returnDuration={1.5}')
   })
 
   test('uses a static fallback for reduced motion or missing Canvas 2D', () => {
@@ -55,6 +76,13 @@ describe('DotGrid integration', () => {
     expect(core).toContain('cancelAnimationFrame')
     expect(core).toContain('ResizeObserver')
     expect(core).toContain('gsap.killTweensOf')
+    expect(core).toContain("import { InertiaPlugin } from 'gsap/InertiaPlugin'")
+    expect(core).toContain('gsap.registerPlugin(InertiaPlugin)')
+    expect(core).toContain('inertia: {')
+    expect(core).toContain('resistance')
+    expect(core).toContain('createRadialGradient')
+    expect(core).toContain('glowOpacity')
+    expect(core).toContain('Math.min(window.devicePixelRatio || 1, 1.5)')
     expect(core).toContain("aria-hidden='true'")
     expect(wrapper).toContain("attributeFilter: ['class']")
     expect(styles).toContain('pointer-events: none')
