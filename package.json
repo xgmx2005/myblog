@@ -23,6 +23,8 @@
     "@astrojs/compiler-rs": "^0.1.10",
     "@astrojs/rss": "4.0.18",
     "@astrojs/vercel": "10.0.6",
+    "@docsearch/css": "3.9.0",
+    "@docsearch/js": "3.9.0",
     "@waline/client": "3.15.2",
     "astro": "6.2.1",
     "astro-pure": "1.4.6",
