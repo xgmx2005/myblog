@@ -44,6 +44,9 @@ bunfig.toml
 .superpowers/
 .worktrees/
 
+# Local code intelligence index
+.codegraph/
+
 # Test output
 test-results/
 playwright-report/
