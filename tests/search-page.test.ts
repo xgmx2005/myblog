@@ -25,4 +25,11 @@ describe('search page', () => {
     expect(baseHead).toContain("name='docsearch:language'")
     expect(baseHead).toContain("content='zh-CN'")
   })
+
+  test('publishes the Algolia domain verification tag', () => {
+    const baseHead = read('src/components/BaseHead.astro')
+
+    expect(baseHead).toContain("name='algolia-site-verification'")
+    expect(baseHead).toContain("content='63A19AA08B0C4815'")
+  })
 })
