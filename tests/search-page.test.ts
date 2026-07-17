@@ -18,4 +18,11 @@ describe('search page', () => {
     expect(searchPage).toContain("searchConfig.mode === 'algolia'")
     expect(searchPage).toContain('<PFSearch />')
   })
+
+  test('publishes crawler language metadata', () => {
+    const baseHead = read('src/components/BaseHead.astro')
+
+    expect(baseHead).toContain("name='docsearch:language'")
+    expect(baseHead).toContain("content='zh-CN'")
+  })
 })
