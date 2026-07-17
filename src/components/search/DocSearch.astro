@@ -60,7 +60,7 @@ const { apiKey, appId, indexName } = Astro.props
           indexName,
           placeholder: '搜索文章',
           searchParameters: {
-            facetFilters: ['language:zh-CN']
+            facetFilters: ['lang:zh-CN']
           },
           transformSearchClient(searchClient) {
             return {

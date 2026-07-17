@@ -14,7 +14,7 @@ describe('search page', () => {
     expect(component).toContain("import '@docsearch/css'")
     expect(component).toContain('data-docsearch-status')
     expect(component).toContain('data-pagefind-fallback')
-    expect(component).toContain('facetFilters')
+    expect(component).toContain("facetFilters: ['lang:zh-CN']")
     expect(searchPage).toContain("searchConfig.mode === 'algolia'")
     expect(searchPage).toContain('<PFSearch />')
   })
