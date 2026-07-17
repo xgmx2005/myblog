@@ -1,70 +1,58 @@
 # CC Personal Site
 
-CC 的个人网站，使用 Astro Theme Pure 构建，内容包括 AI 探索、搭建记录、工具资源和生活随笔。
+CC 的个人网站，用于记录 AI 探索、搭建过程、工具资源和生活思考。
 
-## Upstream provenance
+- 网站：[https://ccxgmx.fun](https://ccxgmx.fun)
+- GitHub：[https://github.com/xgmx2005/myblog](https://github.com/xgmx2005/myblog)
 
-Imported from [cworld1/astro-theme-pure](https://github.com/cworld1/astro-theme-pure) at commit `0047f6d4278d4c3e823dca608022cd6ebe7b5c96` on 2026-07-15.
+## 当前功能
 
-## Local development
+- Markdown/MDX 博客、标签、归档、RSS 和站点地图
+- 中文明暗主题与响应式页面
+- Algolia DocSearch 在线搜索和 Pagefind 本地后备
+- Waline 邮箱/GitHub 登录、评论、回复、文章反应和留言板
+- Obsidian 笔记确定性导入
+- GitHub 推送触发 Vercel 预览或生产部署
 
-- Node.js: `v24.16.0`
-- Package manager: Bun
+## 技术栈
 
-```bash
+Astro 6、Astro Theme Pure、TypeScript、Bun、UnoCSS、Vercel、Waline、Supabase PostgreSQL、Algolia DocSearch 和 Pagefind。
+
+## 快速开始
+
+```powershell
 bun install --frozen-lockfile
 bun run dev
 ```
 
-Open `http://localhost:4321`.
+浏览器打开 `http://localhost:4321`。
 
-## Writing
+## 常用命令
 
-Add Markdown or MDX files under `src/content/blog/`. A minimal post uses:
+| 命令                                      | 用途                                  |
+| ----------------------------------------- | ------------------------------------- |
+| `bun run dev`                             | 启动本地开发服务器                    |
+| `bun test`                                | 运行自动化测试                        |
+| `bun run check`                           | 执行 Astro 类型检查                   |
+| `bun run build`                           | 生成 Vercel 生产产物和 Pagefind 索引  |
+| `bun scripts/import-obsidian-posts.ts`    | 导入已映射的 Obsidian 文章            |
 
-```yaml
----
-title: 第一篇文章
-description: 这篇文章解决什么问题。
-publishDate: 2026-07-15
-tags:
-  - AI 探索
-  - 搭建记录
-language: zh-CN
-draft: false
----
-```
+## 项目文档
 
-Recommended tags are `AI 探索`, `搭建记录`, `工具资源`, and `生活随笔`. Multiple tags are allowed.
+完整架构、内容发布、部署和维护说明见[项目文档入口](docs/README.md)。
 
-The approved Obsidian notes can be imported deterministically with:
+## 上游来源
 
-```bash
-bun scripts/import-obsidian-posts.ts
-```
+项目最初基于 [`cworld1/astro-theme-pure`](https://github.com/cworld1/astro-theme-pure) 的提交 `0047f6d4278d4c3e823dca608022cd6ebe7b5c96`，之后已替换为 CC 的内容、页面、搜索、评论和部署配置。
 
-Run the importer twice before committing; the second run should produce no diff.
+## 验证
 
-## Public configuration
-
-The Astro website accepts one optional interaction variable:
-
-```text
-PUBLIC_WALINE_SERVER_URL=https://your-waline-service.example
-```
-
-Without it, article content and the guestbook still render with a clear disabled state. Database credentials and QQ SMTP authorization codes belong only to the separate `cc-waline` Vercel project; they must never be added to this repository or to `PUBLIC_` variables.
-
-Pagefind is built into every production deployment and remains the active search provider until Algolia DocSearch is approved.
-
-## Verification
-
-```bash
+```powershell
 bun test
 bun run check
 bun run build
 ```
 
-## Deployment
+## 许可证
 
-The production branch is `main`. Vercel Git integration builds preview deployments for other branches and production deployments for `main`. Set `SITE_URL` in Vercel to the real production origin. This repository intentionally contains no GitHub Actions deployment workflow.
+项目保留上游 Apache-2.0 许可证，详见 [LICENSE](LICENSE)。
