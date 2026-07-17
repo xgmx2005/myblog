@@ -1,11 +1,15 @@
 export const DOT_GRID_COLORS = {
   light: {
-    base: '#4f9db1',
-    active: '#16b8c4'
+    base: '#6aa6b5',
+    active: '#00b8d4',
+    glow: '#70e2e8',
+    glowOpacity: 0.18
   },
   dark: {
-    base: '#30283f',
-    active: '#6947ff'
+    base: '#2f293a',
+    active: '#5227ff',
+    glow: '#5227ff',
+    glowOpacity: 0.1
   }
 } as const
 

@@ -48,16 +48,19 @@ export default function GuestbookDotGrid() {
 
   return (
     <DotGrid
-      dotSize={4}
-      gap={22}
+      dotSize={5}
+      gap={15}
       baseColor={colors.base}
       activeColor={colors.active}
-      proximity={150}
-      speedTrigger={140}
-      shockRadius={220}
-      shockStrength={1.6}
-      maxSpeed={3200}
-      returnDuration={1.15}
+      glowColor={colors.glow}
+      glowOpacity={colors.glowOpacity}
+      proximity={120}
+      speedTrigger={100}
+      shockRadius={250}
+      shockStrength={5}
+      maxSpeed={5000}
+      resistance={750}
+      returnDuration={1.5}
     />
   )
 }

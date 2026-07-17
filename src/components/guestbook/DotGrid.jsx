@@ -1,7 +1,10 @@
 import { gsap } from 'gsap'
+import { InertiaPlugin } from 'gsap/InertiaPlugin'
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import './DotGrid.css'
+
+gsap.registerPlugin(InertiaPlugin)
 
 const throttle = (callback, limit) => {
   let lastCall = 0
@@ -26,16 +29,19 @@ function hexToRgb(hex) {
 }
 
 export default function DotGrid({
-  dotSize = 4,
-  gap = 22,
-  baseColor = '#4f9db1',
-  activeColor = '#16b8c4',
-  proximity = 150,
-  speedTrigger = 140,
-  shockRadius = 220,
-  shockStrength = 1.6,
-  maxSpeed = 3200,
-  returnDuration = 1.15,
+  dotSize = 5,
+  gap = 15,
+  baseColor = '#2f293a',
+  activeColor = '#5227ff',
+  glowColor = '#5227ff',
+  glowOpacity = 0.1,
+  proximity = 120,
+  speedTrigger = 100,
+  shockRadius = 250,
+  shockStrength = 5,
+  maxSpeed = 5000,
+  resistance = 750,
+  returnDuration = 1.5,
   className = '',
   style
 }) {
@@ -48,11 +54,13 @@ export default function DotGrid({
     y: -1000,
     lastTime: 0,
     lastX: 0,
-    lastY: 0
+    lastY: 0,
+    inside: false
   })
 
   const baseRgb = useMemo(() => hexToRgb(baseColor), [baseColor])
   const activeRgb = useMemo(() => hexToRgb(activeColor), [activeColor])
+  const glowRgb = useMemo(() => hexToRgb(glowColor), [glowColor])
   const circlePath = useMemo(() => {
     if (typeof window === 'undefined' || !window.Path2D) return null
     const path = new window.Path2D()
@@ -94,7 +102,7 @@ export default function DotGrid({
           cy: startY + row * cell,
           xOffset: 0,
           yOffset: 0,
-          moving: false
+          _inertiaApplied: false
         })
       }
     }
@@ -132,6 +140,24 @@ export default function DotGrid({
       context.setTransform(dpr, 0, 0, dpr, 0, 0)
 
       const pointer = pointerRef.current
+      if (pointer.inside && glowOpacity > 0) {
+        const glowRadius = proximity * 1.45
+        const glow = context.createRadialGradient(
+          pointer.x,
+          pointer.y,
+          0,
+          pointer.x,
+          pointer.y,
+          glowRadius
+        )
+        const glowChannel = `${glowRgb.r} ${glowRgb.g} ${glowRgb.b}`
+        glow.addColorStop(0, `rgb(${glowChannel} / ${glowOpacity})`)
+        glow.addColorStop(0.52, `rgb(${glowChannel} / ${glowOpacity * 0.42})`)
+        glow.addColorStop(1, `rgb(${glowChannel} / 0)`)
+        context.fillStyle = glow
+        context.fillRect(0, 0, canvas.width / dpr, canvas.height / dpr)
+      }
+
       for (const dot of dotsRef.current) {
         const dx = dot.cx - pointer.x
         const dy = dot.cy - pointer.y
@@ -172,7 +198,7 @@ export default function DotGrid({
       cancelAnimationFrame(animationFrame)
       document.removeEventListener('visibilitychange', handleVisibility)
     }
-  }, [activeRgb, baseColor, baseRgb, circlePath, proximity])
+  }, [activeRgb, baseColor, baseRgb, circlePath, glowOpacity, glowRgb, proximity])
 
   useEffect(() => {
     const releaseDot = (dot) => {
@@ -180,23 +206,23 @@ export default function DotGrid({
         xOffset: 0,
         yOffset: 0,
         duration: returnDuration,
-        ease: 'elastic.out(1, 0.72)',
+        ease: 'elastic.out(1, 0.75)',
         overwrite: true,
         onComplete: () => {
-          dot.moving = false
+          dot._inertiaApplied = false
         }
       })
     }
 
-    const moveDot = (dot, xOffset, yOffset, duration = 0.18) => {
-      dot.moving = true
+    const moveDot = (dot, pushX, pushY) => {
+      dot._inertiaApplied = true
       gsap.killTweensOf(dot)
       gsap.to(dot, {
-        xOffset,
-        yOffset,
-        duration,
-        ease: 'power2.out',
-        overwrite: true,
+        inertia: {
+          xOffset: pushX,
+          yOffset: pushY,
+          resistance
+        },
         onComplete: () => releaseDot(dot)
       })
     }
@@ -225,54 +251,59 @@ export default function DotGrid({
       pointer.lastTime = now
       pointer.lastX = event.clientX
       pointer.lastY = event.clientY
+      pointer.inside =
+        pointer.x >= 0 && pointer.x <= rect.width && pointer.y >= 0 && pointer.y <= rect.height
 
       return { pointer, velocityX, velocityY, speed: Math.min(speed, maxSpeed) }
     }
 
     const handleMove = throttle((event) => {
       const motion = updatePointer(event)
-      if (!motion || motion.speed <= speedTrigger) return
+      if (!motion || !motion.pointer.inside || motion.speed <= speedTrigger) return
 
-      const speedRatio = Math.min(motion.speed / maxSpeed, 1)
       for (const dot of dotsRef.current) {
-        if (dot.moving) continue
+        if (dot._inertiaApplied) continue
         const distance = Math.hypot(dot.cx - motion.pointer.x, dot.cy - motion.pointer.y)
         if (distance >= proximity) continue
 
-        const falloff = 1 - distance / proximity
         moveDot(
           dot,
-          motion.velocityX * 0.0035 * speedRatio * falloff,
-          motion.velocityY * 0.0035 * speedRatio * falloff
+          dot.cx - motion.pointer.x + motion.velocityX * 0.005,
+          dot.cy - motion.pointer.y + motion.velocityY * 0.005
         )
       }
-    }, 32)
+    }, 50)
 
     const handleDown = (event) => {
       const motion = updatePointer(event)
-      if (!motion) return
+      if (!motion || !motion.pointer.inside) return
 
       for (const dot of dotsRef.current) {
         const deltaX = dot.cx - motion.pointer.x
         const deltaY = dot.cy - motion.pointer.y
         const distance = Math.hypot(deltaX, deltaY)
-        if (distance === 0 || distance >= shockRadius) continue
+        if (distance >= shockRadius) continue
 
         const falloff = 1 - distance / shockRadius
-        const push = Math.min(28, shockStrength * 22 * falloff)
-        moveDot(dot, (deltaX / distance) * push, (deltaY / distance) * push, 0.14)
+        moveDot(dot, deltaX * shockStrength * falloff, deltaY * shockStrength * falloff)
       }
+    }
+
+    const handleLeave = () => {
+      pointerRef.current.inside = false
     }
 
     window.addEventListener('pointermove', handleMove, { passive: true })
     window.addEventListener('pointerdown', handleDown, { passive: true })
+    document.documentElement.addEventListener('pointerleave', handleLeave)
 
     return () => {
       window.removeEventListener('pointermove', handleMove)
       window.removeEventListener('pointerdown', handleDown)
+      document.documentElement.removeEventListener('pointerleave', handleLeave)
       for (const dot of dotsRef.current) gsap.killTweensOf(dot)
     }
-  }, [maxSpeed, proximity, returnDuration, shockRadius, shockStrength, speedTrigger])
+  }, [maxSpeed, proximity, resistance, returnDuration, shockRadius, shockStrength, speedTrigger])
 
   return (
     <section className={`dot-grid ${className}`} style={style} aria-hidden='true'>
