@@ -21,6 +21,7 @@
   "dependencies": {
     "@astrojs/check": "0.9.9",
     "@astrojs/compiler-rs": "^0.1.10",
+    "@astrojs/react": "5.0.7",
     "@astrojs/rss": "4.0.18",
     "@astrojs/vercel": "10.0.6",
     "@docsearch/css": "3.9.0",
@@ -29,9 +30,13 @@
     "astro": "6.2.1",
     "astro-pure": "1.4.6",
     "katex": "^0.16.45",
+    "postprocessing": "^6.39.2",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "rehype-katex": "^7.0.1",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.5",
+    "three": "^0.185.1",
     "typescript": "^6.0.3"
   },
   "devDependencies": {

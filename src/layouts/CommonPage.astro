@@ -7,12 +7,14 @@ import PageLayout from '@/layouts/ContentLayout.astro'
 interface Props {
   title: string
   headings?: MarkdownHeading[]
+  pageId?: string
 }
 
-const { title, headings, ...props } = Astro.props
+const { title, headings, pageId, ...props } = Astro.props
 ---
 
-<PageLayout meta={{ title }} {...props}>
+<PageLayout meta={{ title }} {pageId} {...props}>
+  <slot name='background' slot='background' />
   {headings?.length && <TOC headings={headings} slot='sidebar' />}
 
   <Fragment slot='header'>

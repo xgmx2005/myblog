@@ -1,4 +1,5 @@
 import { rehypeHeadingIds } from '@astrojs/markdown-remark'
+import react from '@astrojs/react'
 import vercel from '@astrojs/vercel'
 import AstroPureIntegration from 'astro-pure'
 import { defineConfig, svgoOptimizer } from 'astro/config'
@@ -103,6 +104,7 @@ export default defineConfig({
 
   // [Integrations]
   integrations: [
+    react(),
     // astro-pure will automatically add sitemap, mdx & unocss
     // sitemap(),
     // mdx(),

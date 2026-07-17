@@ -13,6 +13,17 @@
 
 ## Waline
 
+### 留言板视觉层
+
+`/guestbook` 在 Astro 页面内挂载一个仅客户端运行的 React Island，使用 React Bits PixelBlast、Three.js 和 Postprocessing 绘制整页背景。该层只负责视觉表现：
+
+- 主题颜色跟随 `html.dark`；
+- Canvas 不接管指针事件，页面级事件只用于背景涟漪和流体扰动；
+- `prefers-reduced-motion: reduce`、WebGL2 不可用或初始化失败时只显示静态渐变；
+- Waline 仍固定使用 `/guestbook`，登录、留言与管理逻辑不经过 React Island。
+
+修改视觉参数时不要改变 Waline 的 `path`，也不要把 PixelBlast 移入全局布局，否则其他页面会额外加载 React 和 WebGL 运行时。
+
 ### 当前功能
 
 Waline 负责：
