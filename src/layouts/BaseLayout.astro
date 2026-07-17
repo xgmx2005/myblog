@@ -12,11 +12,13 @@ import '@/assets/styles/app.css'
 interface Props {
   meta: SiteMeta
   highlightColor?: string
+  pageId?: string
 }
 
 const {
   meta: { articleDate, description = config.description, ogImage, title },
   highlightColor,
+  pageId,
   ...props
 } = Astro.props
 ---
@@ -27,7 +29,8 @@ const {
     <ThemeProvider />
   </head>
 
-  <body class='flex justify-center bg-background text-foreground' {...props}>
+  <body class='flex justify-center bg-background text-foreground' data-page={pageId} {...props}>
+    <slot name='background' />
     {
       highlightColor && (
         <div

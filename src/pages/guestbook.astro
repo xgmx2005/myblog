@@ -1,9 +1,95 @@
 ---
-import WalineThread from '@/components/waline/WalineThread.astro'
 import PageLayout from '@/layouts/CommonPage.astro'
+import GuestbookPixelBlast from '@/components/guestbook/GuestbookPixelBlast.jsx'
+import WalineThread from '@/components/waline/WalineThread.astro'
 ---
 
-<PageLayout title='留言板'>
+<PageLayout title='留言板' pageId='guestbook'>
+  <div slot='background' class='guestbook-backdrop' aria-hidden='true'>
+    <GuestbookPixelBlast client:only='react' />
+  </div>
+
   <p>欢迎来这里打个招呼。留言公开可见，登录后可以发布。</p>
   <WalineThread path='/guestbook' reaction={false} title='伙伴留言' />
 </PageLayout>
+
+<style is:global>
+  body[data-page='guestbook'] {
+    background:
+      radial-gradient(circle at 18% 12%, rgb(196 217 255 / 72%), transparent 44%),
+      radial-gradient(circle at 82% 28%, rgb(222 205 255 / 66%), transparent 48%),
+      linear-gradient(135deg, rgb(244 250 255 / 94%), rgb(238 235 250 / 78%)),
+      hsl(var(--background));
+  }
+
+  body[data-page='guestbook'] #main-container {
+    position: relative;
+    z-index: 1;
+  }
+
+  body[data-page='guestbook'] .guestbook-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 18% 12%, rgb(196 217 255 / 72%), transparent 44%),
+      radial-gradient(circle at 82% 28%, rgb(222 205 255 / 66%), transparent 48%),
+      linear-gradient(135deg, rgb(244 250 255 / 94%), rgb(238 235 250 / 78%));
+  }
+
+  html.dark body[data-page='guestbook'] {
+    background:
+      radial-gradient(circle at 18% 12%, rgb(52 71 126 / 52%), transparent 45%),
+      radial-gradient(circle at 82% 28%, rgb(88 61 126 / 46%), transparent 50%),
+      linear-gradient(145deg, rgb(9 15 31 / 96%), rgb(25 19 42 / 88%)), hsl(var(--background));
+  }
+
+  html.dark body[data-page='guestbook'] .guestbook-backdrop {
+    background:
+      radial-gradient(circle at 18% 12%, rgb(52 71 126 / 52%), transparent 45%),
+      radial-gradient(circle at 82% 28%, rgb(88 61 126 / 46%), transparent 50%),
+      linear-gradient(145deg, rgb(9 15 31 / 96%), rgb(25 19 42 / 88%));
+  }
+
+  body[data-page='guestbook'] #content-header,
+  body[data-page='guestbook'] #content {
+    border: 1px solid hsl(var(--border) / 0.72);
+    border-radius: calc(var(--radius) + 0.5rem);
+    background: hsl(var(--background) / 0.76);
+    box-shadow: 0 1.25rem 4rem rgb(47 54 92 / 12%);
+    backdrop-filter: blur(1.25rem) saturate(130%);
+  }
+
+  body[data-page='guestbook'] #content-header {
+    padding: 1.25rem 1.5rem;
+  }
+
+  body[data-page='guestbook'] #content {
+    margin-top: 1rem;
+    padding: 1.5rem;
+  }
+
+  html.dark body[data-page='guestbook'] #content-header,
+  html.dark body[data-page='guestbook'] #content {
+    border-color: hsl(var(--border) / 0.8);
+    background: hsl(var(--background) / 0.72);
+    box-shadow: 0 1.25rem 4rem rgb(0 0 0 / 28%);
+  }
+
+  @media (max-width: 640px) {
+    body[data-page='guestbook'] #content-header,
+    body[data-page='guestbook'] #content {
+      border-radius: calc(var(--radius) + 0.25rem);
+    }
+
+    body[data-page='guestbook'] #content-header {
+      padding: 1rem;
+    }
+
+    body[data-page='guestbook'] #content {
+      padding: 1rem;
+    }
+  }
+</style>
