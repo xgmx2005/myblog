@@ -21,16 +21,16 @@ draft: false
 
 完整字段：
 
-| 字段            | 必填 | 规则                                                               |
-| --------------- | ---- | ------------------------------------------------------------------ |
-| `title`         | 是   | 字符串，最长 60 个字符                                             |
-| `description`   | 是   | 字符串，最长 160 个字符                                            |
-| `publishDate`   | 是   | 可被 JavaScript 日期解析的值，推荐 `YYYY-MM-DD`                    |
-| `updatedDate`   | 否   | 内容发生实质更新时填写                                             |
-| `tags`          | 否   | 字符串数组；构建时去空格、转小写并去重                             |
-| `language`      | 否   | 默认 `zh-CN`                                                       |
-| `draft`         | 否   | 默认 `false`；生产环境会过滤 `true`                                |
-| `heroImage`     | 否   | 可设置图片、替代文本、尺寸和颜色等元数据                           |
+| 字段          | 必填 | 规则                                            |
+| ------------- | ---- | ----------------------------------------------- |
+| `title`       | 是   | 字符串，最长 60 个字符                          |
+| `description` | 是   | 字符串，最长 160 个字符                         |
+| `publishDate` | 是   | 可被 JavaScript 日期解析的值，推荐 `YYYY-MM-DD` |
+| `updatedDate` | 否   | 内容发生实质更新时填写                          |
+| `tags`        | 否   | 字符串数组；构建时去空格、转小写并去重          |
+| `language`    | 否   | 默认 `zh-CN`                                    |
+| `draft`       | 否   | 默认 `false`；生产环境会过滤 `true`             |
+| `heroImage`   | 否   | 可设置图片、替代文本、尺寸和颜色等元数据        |
 
 包含可选字段的示例：
 
@@ -95,13 +95,13 @@ bun run build
 
 当前导入脚本是 `scripts/import-obsidian-posts.ts`。它显式映射以下五篇源笔记：
 
-| 输出 slug                              | 内容主题                         |
-| -------------------------------------- | -------------------------------- |
-| `obsidian-ai-agent-claudian-skills`    | Claudian 与 Obsidian Skills      |
-| `obsidian-cli-core-principles`         | Obsidian CLI 核心原理            |
-| `git-advanced-version-branch`          | Git 版本与分支管理               |
-| `obsidian-essential-skills`            | Obsidian 必装 Skills             |
-| `obsidian-cli-command-reference`       | Obsidian CLI 命令速查            |
+| 输出 slug                           | 内容主题                    |
+| ----------------------------------- | --------------------------- |
+| `obsidian-ai-agent-claudian-skills` | Claudian 与 Obsidian Skills |
+| `obsidian-cli-core-principles`      | Obsidian CLI 核心原理       |
+| `git-advanced-version-branch`       | Git 版本与分支管理          |
+| `obsidian-essential-skills`         | Obsidian 必装 Skills        |
+| `obsidian-cli-command-reference`    | Obsidian CLI 命令速查       |
 
 脚本会：
 

@@ -1,6 +1,6 @@
-import { describe, expect, test } from 'bun:test'
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, extname, resolve } from 'node:path'
+import { describe, expect, test } from 'bun:test'
 
 const root = resolve(import.meta.dir, '..')
 const requiredDocs = [
@@ -58,7 +58,10 @@ describe('project documentation', () => {
     for (const line of readFileSync(envPath, 'utf8').split(/\r?\n/)) {
       const separator = line.indexOf('=')
       if (separator < 1) continue
-      const value = line.slice(separator + 1).trim().replace(/^['"]|['"]$/g, '')
+      const value = line
+        .slice(separator + 1)
+        .trim()
+        .replace(/^['"]|['"]$/g, '')
       if (value.length >= 12) expect(corpus).not.toContain(value)
     }
   })

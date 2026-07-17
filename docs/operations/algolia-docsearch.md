@@ -62,14 +62,7 @@ new Crawler({
   initialIndexSettings: {
     'CC Blog DocSearch': {
       attributesForFaceting: ['type', 'lang', 'filterOnly(language)'],
-      attributesToRetrieve: [
-        'hierarchy',
-        'content',
-        'anchor',
-        'url',
-        'url_without_anchor',
-        'type'
-      ],
+      attributesToRetrieve: ['hierarchy', 'content', 'anchor', 'url', 'url_without_anchor', 'type'],
       attributesToHighlight: ['hierarchy', 'content'],
       attributesToSnippet: ['content:10'],
       camelCaseAttributes: ['hierarchy', 'content'],
@@ -101,12 +94,12 @@ new Crawler({
 
 发布 crawler 配置前测试：
 
-| URL | 预期 |
-| --- | --- |
+| URL                                                   | 预期                      |
+| ----------------------------------------------------- | ------------------------- |
 | `https://ccxgmx.fun/blog/git-advanced-version-branch` | 多条文章 heading/正文记录 |
-| `https://ccxgmx.fun/tags/git` | 标签页记录 |
-| `https://ccxgmx.fun/archives` | 归档记录 |
-| `https://ccxgmx.fun/guestbook` | 0 条记录 |
+| `https://ccxgmx.fun/tags/git`                         | 标签页记录                |
+| `https://ccxgmx.fun/archives`                         | 归档记录                  |
+| `https://ccxgmx.fun/guestbook`                        | 0 条记录                  |
 
 每个测试都应是 HTTP 200 和 `SUCCESS`。文章 Records 应包含：
 

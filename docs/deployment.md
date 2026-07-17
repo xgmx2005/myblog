@@ -37,13 +37,13 @@ flowchart LR
 
 Astro 网站项目使用：
 
-| 名称                            | 环境建议                         | 说明                                  |
-| ------------------------------- | -------------------------------- | ------------------------------------- |
-| `SITE_URL`                      | Production、Preview 按需设置     | Astro canonical、RSS 和 sitemap origin|
-| `PUBLIC_WALINE_SERVER_URL`      | Production、Preview、Development | Waline 公开服务地址                   |
-| `PUBLIC_ALGOLIA_APP_ID`         | Production、Preview              | Algolia 公共应用 ID                   |
-| `PUBLIC_ALGOLIA_SEARCH_API_KEY` | Production、Preview              | 仅允许搜索目标索引的只读密钥          |
-| `PUBLIC_ALGOLIA_INDEX_NAME`     | Production、Preview              | 当前 DocSearch 索引名称               |
+| 名称                            | 环境建议                         | 说明                                   |
+| ------------------------------- | -------------------------------- | -------------------------------------- |
+| `SITE_URL`                      | Production、Preview 按需设置     | Astro canonical、RSS 和 sitemap origin |
+| `PUBLIC_WALINE_SERVER_URL`      | Production、Preview、Development | Waline 公开服务地址                    |
+| `PUBLIC_ALGOLIA_APP_ID`         | Production、Preview              | Algolia 公共应用 ID                    |
+| `PUBLIC_ALGOLIA_SEARCH_API_KEY` | Production、Preview              | 仅允许搜索目标索引的只读密钥           |
+| `PUBLIC_ALGOLIA_INDEX_NAME`     | Production、Preview              | 当前 DocSearch 索引名称                |
 
 生产环境的 `SITE_URL`：
 

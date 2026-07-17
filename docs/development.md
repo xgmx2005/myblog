@@ -33,13 +33,13 @@ bun run dev
 
 本地配置放在 `.env.local`。该文件已经被 Git 忽略，不得提交或把真实值复制到公开文档。
 
-| 名称                            | 是否公开到浏览器 | 用途                       | 缺失时的行为                  |
-| ------------------------------- | ---------------- | -------------------------- | ----------------------------- |
-| `SITE_URL`                      | 否               | 正式站点 origin            | 使用 `http://localhost:4321`  |
-| `PUBLIC_WALINE_SERVER_URL`      | 是               | Waline 服务地址            | 互动区显示不可用状态          |
-| `PUBLIC_ALGOLIA_APP_ID`         | 是               | Algolia 应用 ID            | 使用 Pagefind                 |
-| `PUBLIC_ALGOLIA_SEARCH_API_KEY` | 是               | Algolia 只读搜索密钥       | 使用 Pagefind                 |
-| `PUBLIC_ALGOLIA_INDEX_NAME`     | 是               | DocSearch 索引名称         | 使用 Pagefind                 |
+| 名称                            | 是否公开到浏览器 | 用途                 | 缺失时的行为                 |
+| ------------------------------- | ---------------- | -------------------- | ---------------------------- |
+| `SITE_URL`                      | 否               | 正式站点 origin      | 使用 `http://localhost:4321` |
+| `PUBLIC_WALINE_SERVER_URL`      | 是               | Waline 服务地址      | 互动区显示不可用状态         |
+| `PUBLIC_ALGOLIA_APP_ID`         | 是               | Algolia 应用 ID      | 使用 Pagefind                |
+| `PUBLIC_ALGOLIA_SEARCH_API_KEY` | 是               | Algolia 只读搜索密钥 | 使用 Pagefind                |
+| `PUBLIC_ALGOLIA_INDEX_NAME`     | 是               | DocSearch 索引名称   | 使用 Pagefind                |
 
 示例：
 
@@ -55,17 +55,17 @@ PUBLIC_ALGOLIA_INDEX_NAME=your-index
 
 ## 常用命令
 
-| 命令                                   | 作用                                      |
-| -------------------------------------- | ----------------------------------------- |
-| `bun run dev`                          | 启动 Astro 开发服务器                     |
-| `bun test`                             | 执行全部 Bun 测试                         |
-| `bun test tests/文件名.test.ts`        | 执行单个测试文件                          |
-| `bun run check`                        | 执行 Astro 类型检查                       |
-| `bun run build`                        | 完整生产构建并生成 Pagefind 索引          |
-| `bun run preview`                      | 预览已生成的 Astro 产物                   |
-| `bun run format`                       | 使用 Prettier 格式化代码和 Markdown       |
-| `bun run lint`                         | 检查并修复 `src/` 下的 ESLint 问题        |
-| `bun scripts/import-obsidian-posts.ts` | 导入脚本中已经映射的 Obsidian 文章        |
+| 命令                                   | 作用                                |
+| -------------------------------------- | ----------------------------------- |
+| `bun run dev`                          | 启动 Astro 开发服务器               |
+| `bun test`                             | 执行全部 Bun 测试                   |
+| `bun test tests/文件名.test.ts`        | 执行单个测试文件                    |
+| `bun run check`                        | 执行 Astro 类型检查                 |
+| `bun run build`                        | 完整生产构建并生成 Pagefind 索引    |
+| `bun run preview`                      | 预览已生成的 Astro 产物             |
+| `bun run format`                       | 使用 Prettier 格式化代码和 Markdown |
+| `bun run lint`                         | 检查并修复 `src/` 下的 ESLint 问题  |
+| `bun scripts/import-obsidian-posts.ts` | 导入脚本中已经映射的 Obsidian 文章  |
 
 ## 目录说明
 

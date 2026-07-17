@@ -29,13 +29,13 @@ bun run dev
 
 ## 常用命令
 
-| 命令                                      | 用途                                  |
-| ----------------------------------------- | ------------------------------------- |
-| `bun run dev`                             | 启动本地开发服务器                    |
-| `bun test`                                | 运行自动化测试                        |
-| `bun run check`                           | 执行 Astro 类型检查                   |
-| `bun run build`                           | 生成 Vercel 生产产物和 Pagefind 索引  |
-| `bun scripts/import-obsidian-posts.ts`    | 导入已映射的 Obsidian 文章            |
+| 命令                                   | 用途                                 |
+| -------------------------------------- | ------------------------------------ |
+| `bun run dev`                          | 启动本地开发服务器                   |
+| `bun test`                             | 运行自动化测试                       |
+| `bun run check`                        | 执行 Astro 类型检查                  |
+| `bun run build`                        | 生成 Vercel 生产产物和 Pagefind 索引 |
+| `bun scripts/import-obsidian-posts.ts` | 导入已映射的 Obsidian 文章           |
 
 ## 项目文档
 
