@@ -1,12 +1,12 @@
 ---
 import PageLayout from '@/layouts/CommonPage.astro'
-import GuestbookPixelBlast from '@/components/guestbook/GuestbookPixelBlast.jsx'
+import GuestbookDotGrid from '@/components/guestbook/GuestbookDotGrid.jsx'
 import WalineThread from '@/components/waline/WalineThread.astro'
 ---
 
 <PageLayout title='留言板' pageId='guestbook'>
   <div slot='background' class='guestbook-backdrop' aria-hidden='true'>
-    <GuestbookPixelBlast client:only='react' />
+    <GuestbookDotGrid client:only='react' />
   </div>
 
   <p>欢迎来这里打个招呼。留言公开可见，登录后可以发布。</p>
@@ -15,11 +15,11 @@ import WalineThread from '@/components/waline/WalineThread.astro'
 
 <style is:global>
   body[data-page='guestbook'] {
-    background:
-      radial-gradient(circle at 18% 12%, rgb(196 217 255 / 72%), transparent 44%),
-      radial-gradient(circle at 82% 28%, rgb(222 205 255 / 66%), transparent 48%),
-      linear-gradient(135deg, rgb(244 250 255 / 94%), rgb(238 235 250 / 78%)),
-      hsl(var(--background));
+    --guestbook-surface: #eaf8fa;
+    --guestbook-dot: rgb(79 157 177 / 72%);
+    --guestbook-panel: rgb(249 255 255 / 78%);
+    --guestbook-panel-border: rgb(255 255 255 / 88%);
+    background-color: var(--guestbook-surface);
   }
 
   body[data-page='guestbook'] #main-container {
@@ -33,33 +33,27 @@ import WalineThread from '@/components/waline/WalineThread.astro'
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    background:
-      radial-gradient(circle at 18% 12%, rgb(196 217 255 / 72%), transparent 44%),
-      radial-gradient(circle at 82% 28%, rgb(222 205 255 / 66%), transparent 48%),
-      linear-gradient(135deg, rgb(244 250 255 / 94%), rgb(238 235 250 / 78%));
+    background-color: var(--guestbook-surface);
+    background-image: radial-gradient(circle, var(--guestbook-dot) 2px, transparent 2.2px);
+    background-position: center;
+    background-size: 26px 26px;
   }
 
   html.dark body[data-page='guestbook'] {
-    background:
-      radial-gradient(circle at 18% 12%, rgb(52 71 126 / 52%), transparent 45%),
-      radial-gradient(circle at 82% 28%, rgb(88 61 126 / 46%), transparent 50%),
-      linear-gradient(145deg, rgb(9 15 31 / 96%), rgb(25 19 42 / 88%)), hsl(var(--background));
-  }
-
-  html.dark body[data-page='guestbook'] .guestbook-backdrop {
-    background:
-      radial-gradient(circle at 18% 12%, rgb(52 71 126 / 52%), transparent 45%),
-      radial-gradient(circle at 82% 28%, rgb(88 61 126 / 46%), transparent 50%),
-      linear-gradient(145deg, rgb(9 15 31 / 96%), rgb(25 19 42 / 88%));
+    --guestbook-surface: #121017;
+    --guestbook-dot: rgb(48 40 63 / 88%);
+    --guestbook-panel: rgb(21 18 29 / 78%);
+    --guestbook-panel-border: rgb(125 102 180 / 18%);
+    background-color: var(--guestbook-surface);
   }
 
   body[data-page='guestbook'] #content-header,
   body[data-page='guestbook'] #content {
-    border: 1px solid hsl(var(--border) / 0.72);
+    border: 1px solid var(--guestbook-panel-border);
     border-radius: calc(var(--radius) + 0.5rem);
-    background: hsl(var(--background) / 0.76);
-    box-shadow: 0 1.25rem 4rem rgb(47 54 92 / 12%);
-    backdrop-filter: blur(1.25rem) saturate(130%);
+    background: var(--guestbook-panel);
+    box-shadow: 0 1.25rem 4rem rgb(24 93 105 / 11%);
+    backdrop-filter: blur(1.15rem) saturate(118%);
   }
 
   body[data-page='guestbook'] #content-header {
@@ -73,9 +67,9 @@ import WalineThread from '@/components/waline/WalineThread.astro'
 
   html.dark body[data-page='guestbook'] #content-header,
   html.dark body[data-page='guestbook'] #content {
-    border-color: hsl(var(--border) / 0.8);
-    background: hsl(var(--background) / 0.72);
-    box-shadow: 0 1.25rem 4rem rgb(0 0 0 / 28%);
+    border-color: var(--guestbook-panel-border);
+    background: var(--guestbook-panel);
+    box-shadow: 0 1.25rem 4rem rgb(0 0 0 / 32%);
   }
 
   @media (max-width: 640px) {
