@@ -1,7 +1,9 @@
 ---
 import { PFSearch } from 'astro-pure/components/pages'
 import { Button } from 'astro-pure/user'
+import DocSearch from '@/components/search/DocSearch.astro'
 import PageLayout from '@/layouts/BaseLayout.astro'
+import { searchConfig } from '@/lib/search/config'
 import { integ } from '@/site-config'
 
 const meta = {
@@ -19,7 +21,9 @@ const meta = {
 
     <div id='content' class='animate'>
       {
-        integ.pagefind ? (
+        searchConfig.mode === 'algolia' && searchConfig.algolia ? (
+          <DocSearch {...searchConfig.algolia} />
+        ) : integ.pagefind ? (
           <>
             <p>输入关键词搜索全部文章。</p>
             <PFSearch />

@@ -1,0 +1,89 @@
+---
+import '@docsearch/css'
+
+import { PFSearch } from 'astro-pure/components/pages'
+
+interface Props {
+  apiKey: string
+  appId: string
+  indexName: string
+}
+
+const { apiKey, appId, indexName } = Astro.props
+---
+
+<section
+  data-docsearch-shell
+  data-api-key={apiKey}
+  data-app-id={appId}
+  data-index-name={indexName}
+>
+  <p class='text-sm text-muted-foreground' data-docsearch-status aria-live='polite'>
+    在线搜索正在加载……
+  </p>
+  <div class='my-4' data-docsearch-root></div>
+
+  <details class='mt-6' data-pagefind-fallback>
+    <summary class='cursor-pointer font-medium'>使用本地搜索</summary>
+    <p class='mt-3 text-sm text-muted-foreground'>在线搜索不可用时，可继续搜索本站已发布内容。</p>
+    <PFSearch />
+  </details>
+</section>
+
+<script>
+  import docsearch from '@docsearch/js'
+
+  const unavailableMessage = '在线搜索暂时不可用，请使用下方本地搜索。'
+
+  function initializeDocSearch() {
+    for (const shell of document.querySelectorAll<HTMLElement>('[data-docsearch-shell]')) {
+      if (shell.dataset.initialized === 'true') continue
+
+      const root = shell.querySelector<HTMLElement>('[data-docsearch-root]')
+      const status = shell.querySelector<HTMLElement>('[data-docsearch-status]')
+      const fallback = shell.querySelector<HTMLDetailsElement>('[data-pagefind-fallback]')
+      const { apiKey, appId, indexName } = shell.dataset
+
+      if (!root || !status || !fallback || !apiKey || !appId || !indexName) continue
+
+      const showFallback = () => {
+        status.hidden = false
+        status.textContent = unavailableMessage
+        fallback.open = true
+      }
+
+      try {
+        docsearch({
+          container: root,
+          appId,
+          apiKey,
+          indexName,
+          placeholder: '搜索文章',
+          searchParameters: {
+            facetFilters: ['language:zh-CN']
+          },
+          transformSearchClient(searchClient) {
+            return {
+              ...searchClient,
+              async search(...args: Parameters<typeof searchClient.search>) {
+                try {
+                  return await searchClient.search(...args)
+                } catch (error) {
+                  showFallback()
+                  throw error
+                }
+              }
+            }
+          }
+        })
+        shell.dataset.initialized = 'true'
+        status.hidden = true
+      } catch {
+        showFallback()
+      }
+    }
+  }
+
+  initializeDocSearch()
+  document.addEventListener('astro:page-load', initializeDocSearch)
+</script>
