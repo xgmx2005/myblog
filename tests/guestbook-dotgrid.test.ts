@@ -5,17 +5,18 @@ import { describe, expect, test } from 'bun:test'
 const root = resolve(import.meta.dir, '..')
 const read = (path: string) => readFileSync(resolve(root, path), 'utf8')
 
-describe('guestbook PixelBlast page', () => {
-  test('mounts the background only on the guestbook route', () => {
+describe('guestbook DotGrid page', () => {
+  test('mounts the lightweight background only on the guestbook route', () => {
     const guestbook = read('src/pages/guestbook.astro')
     const baseLayout = read('src/layouts/BaseLayout.astro')
 
-    expect(guestbook).toContain('import GuestbookPixelBlast')
+    expect(guestbook).toContain('import GuestbookDotGrid')
     expect(guestbook).toContain("client:only='react'")
     expect(guestbook).toContain("pageId='guestbook'")
     expect(guestbook).toContain("slot='background'")
     expect(guestbook).toContain("class='guestbook-backdrop'")
-    expect(baseLayout).not.toContain('GuestbookPixelBlast')
+    expect(baseLayout).not.toContain('GuestbookDotGrid')
+    expect(guestbook).not.toContain('GuestbookPixelBlast')
   })
 
   test('forwards the page identifier and background outside transformed content', () => {
@@ -42,10 +43,11 @@ describe('guestbook PixelBlast page', () => {
     expect(guestbook).toContain("title='伙伴留言'")
   })
 
-  test('provides readable glass surfaces and a static fallback', () => {
+  test('matches the approved clear daytime and violet night surfaces', () => {
     const guestbook = read('src/pages/guestbook.astro')
 
-    expect(guestbook).toContain('linear-gradient')
+    expect(guestbook).toContain('--guestbook-surface: #eaf8fa')
+    expect(guestbook).toContain('--guestbook-surface: #121017')
     expect(guestbook).toContain('backdrop-filter: blur(')
     expect(guestbook).toContain('#content-header')
     expect(guestbook).toContain('#content')
