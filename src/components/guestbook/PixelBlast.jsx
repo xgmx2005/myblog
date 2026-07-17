@@ -362,6 +362,7 @@ const PixelBlast = ({
     let composer
     let touch
     let liquidEffect
+    let timer
     let resizeObserver
     let raf = 0
     let disposed = false
@@ -381,6 +382,7 @@ const PixelBlast = ({
       material?.dispose()
       touch?.texture.dispose()
       composer?.dispose()
+      if (timer) timer.dispose()
       renderer?.dispose()
       renderer?.forceContextLoss()
       renderer?.domElement.remove()
@@ -437,7 +439,7 @@ const PixelBlast = ({
       quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material)
       scene.add(quad)
 
-      const clock = new THREE.Clock()
+      timer = new THREE.Timer()
       const setSize = () => {
         const width = container.clientWidth || 1
         const height = container.clientHeight || 1
@@ -556,13 +558,14 @@ const PixelBlast = ({
         liquidEffect
       }
 
-      const animate = () => {
+      const animate = (timestamp) => {
         if (autoPauseOffscreen && !visibilityRef.current.visible) {
           raf = requestAnimationFrame(animate)
           return
         }
 
-        uniforms.uTime.value = timeOffset + clock.getElapsedTime() * speedRef.current
+        timer.update(timestamp)
+        uniforms.uTime.value = timeOffset + timer.getElapsed() * speedRef.current
         const liquidTime = liquidEffect?.uniforms.get('uTime')
         if (liquidTime) liquidTime.value = uniforms.uTime.value
 

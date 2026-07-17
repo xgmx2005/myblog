@@ -16,7 +16,7 @@ describe('PixelBlast integration', () => {
     const pkg = JSON.parse(read('package.json'))
     const config = read('astro.config.ts')
 
-    expect(typeof pkg.dependencies['@astrojs/react']).toBe('string')
+    expect(pkg.dependencies['@astrojs/react']).toBe('5.0.7')
     expect(typeof pkg.dependencies.react).toBe('string')
     expect(typeof pkg.dependencies['react-dom']).toBe('string')
     expect(typeof pkg.dependencies.three).toBe('string')
@@ -50,6 +50,9 @@ describe('PixelBlast integration', () => {
     expect(core).toContain('cancelAnimationFrame')
     expect(core).toContain('forceContextLoss')
     expect(core).toContain('touch?.texture.dispose()')
+    expect(core).toContain('new THREE.Timer()')
+    expect(core).not.toContain('new THREE.Clock()')
+    expect(core).toContain('timer.dispose()')
     expect(core).toContain('aria-hidden')
     expect(wrapper).toContain("attributeFilter: ['class']")
     expect(wrapper).toContain("matchMedia('(prefers-reduced-motion: reduce)')")
